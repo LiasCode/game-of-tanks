@@ -1,0 +1,392 @@
+
+  * Bit value 	                            1   1   1 	 1  1 	1 	1 	1
+  * Position value as a power of base 2 	128  64 	32 	16 	8 	4 	2 	1
+  * Bit number 	                            7   6 	 5 	 4 	3 	2 	1 	0
+
+  * TO CONVERT TO NEGATIVE value -> reverse the bits and add 1 ;; tow's complement notation
+
+  * TO SUBTRACT ONE VALUE FROM ANOTHER, convert the number being subtracted to two's complement format and add the numbers.
+
+  * There are two kinds of memory addresses :
+    - Absolute address - a direct reference of specific location.
+    - Segment address (or offset) - starting address of a memory segment with the offset value.
+
+  * An assembly program can be divided into three sections :
+    - The data section
+    - The bss section
+    - The text section
+
+  * Assembly language programs consist of three types of statements :
+    - Executable instructions or instructions
+    - Assembler directives or pseudo-ops
+    - Macros
+
+  * Statements; One per line ; in [] are optionals :
+    - [label]   mnemonic   [operands]   [;comment]
+
+  * EXAMPLE  : HOLA MUNDO
+  ```
+    section	.text
+      global _start                ;must be declared for linker (ld)
+
+    _start:                        ;tells linker entry point
+      mov	edx,len                  ;message length
+      mov	ecx,msg                  ;message to write
+      mov	ebx,1                    ;file descriptor (stdout)
+      mov	eax,4                    ;system call number (sys_write)
+      int	0x80                     ;call kernel
+
+      mov	eax,1                    ;system call number (sys_exit)
+      int	0x80                     ;call kernel
+
+    section	.data
+      msg db 'Hello, world!', 0xa  ;string to be printed
+      len equ $ - msg              ;length of the string
+  ```
+  - HOW COMPILE :
+      1 - nasm -f elf hello.asm
+      2 - ld -m elf_i386 -s -o hello hello.o
+
+  * EXAMPLE BOOTEABLE  :
+  ```
+    format binary as 'img'
+
+    ;;;;;;;;;;;; Seccion de booteo
+    org 7c00h
+    mov ax, cs
+    mov ds, ax
+    xor ax,ax
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    ;;;;;; BUCLE FINAL Para que no cierre
+    jmp $
+    ;; DATA
+
+    ;; FIRMA DEL BOOTEABLE
+    times 510 - ($ - $$) db 0
+    dw 0aa55h
+  ```
+    - HOW TO COMPILE : fasm ./hello.asm
+
+
+
+  * Registers are processor components that hold data and address
+
+  _______Registers________
+
++--------------------General Porpouse Registers------------------------+
+|                                                                      |
+|     32      16    8    8                                             |
+|   +-----+-------+----+----+--------------------------+               |
+|   | EAX |    AX | AH | AL | -> Accumulator           |               |
+|   +-----+-------+----+----+                          |               |
+|   | EBX |    BX | BH | BL | -> Base              Data Registers      |
+|   +-----+-------+----+----+                          |               |
+|   | ECX |    CX | CH | CL | -> Counter               |               |
+|   +-----+-------+----+----+                          |               |
+|   | EDX |    DX | DH | DL | -> DATA                  |               |
+|   +-----+-------+----+----+--------------------------+               |
+|                                                                      |
+|     32      16                                                       |
+|   +-----+-------+---------+--------------------------+               |
+|   | EIP |    IP |         | -> Instruction Pointer   |               |
+|   ------+-------+---------+                          |               |
+|   | ESP |    SP |         | -> Stack Pointer      Pointer Registers  |
+|   +-----+-------+---------+                          |               |
+|   | EBP |    BP |         | -> Base  Pointer         |               |
+|   +-----+-------+---------+--------------------------+               |
+|                                                                      |
+|                                                                      |
+|     32      16                                                       |
+|   +-----+-------+---------+--------------------------+               |
+|   | ESI |    SI |         | -> Source Index          |               |
+|   +-----+-------+---------+                         Index Registers  |
+|   | EDI |    DI |         | -> Destination Index     |               |
+|   +-----+-------+---------+--------------------------+               |
+|                                                                      |
++----------------------------------------------------------------------+
+
+    32      16
+  +-----+-------+---------+--------------------------+
+  |     |    CS |         | -> Code Segment          |
+  +-----+-------+---------+                         Segment Registers
+  |     |    DS |         | -> Data Segment          |
+  +-----+-------+---------+                          |
+  |     |    SS |         | -> Stack  Segment        |
+  +-----+-------+---------+                          |
+  |     |    ES |         | -> Extra Segment         |
+  +-----+-------+---------+                          |
+  |     |    GS |         |                          |
+  +-----+-------+---------+ -> General Purpose       |
+  |     |    FS |         |      Segments            |
+  +-----+-------+---------+--------------------------+
+
+  * CONTROL REGISTERS :
+  * FLAGS
+    - Overflow Flag (OF) − It indicates the overflow of a high-order bit (leftmost bit) of data after a signed arithmetic operation.
+
+    - Direction Flag (DF) − It determines left or right direction for moving or comparing string data.
+      When the DF value is 0, the string operation takes left-to-right direction and when the value is set to 1,
+      the string operation takes right-to-left direction.
+
+    - Interrupt Flag (IF) − It determines whether the external interrupts like keyboard entry, etc., are to be ignored or processed.
+      It disables the external interrupt when the value is 0 and enables interrupts when set to 1.
+
+    - Trap Flag (TF) − It allows setting the operation of the processor in single-step mode.
+      The DEBUG program we used sets the trap flag, so we could step through the execution one instruction at a time.
+
+    - Sign Flag (SF) − It shows the sign of the result of an arithmetic operation.
+      This flag is set according to the sign of a data item following the arithmetic operation.
+      The sign is indicated by the high-order of leftmost bit. A positive result clears the value of SF to 0 and
+      negative result sets it to 1.
+
+    - Zero Flag (ZF) − It indicates the result of an arithmetic or comparison operation.
+      A nonzero result clears the zero flag to 0, and a zero result sets it to 1.
+
+    - Auxiliary Carry Flag (AF) − It contains the carry from bit 3 to bit 4 following an arithmetic operation;
+      used for specialized arithmetic. The AF is set when a 1-byte arithmetic operation causes a carry from bit 3 into bit 4.
+
+    - Parity Flag (PF) − It indicates the total number of 1-bits in the result obtained from an arithmetic operation.
+      An even number of 1-bits clears the parity flag to 0 and an odd number of 1-bits sets the parity flag to 1.
+
+    - Carry Flag (CF) − It contains the carry of 0 or 1 from a high-order bit (leftmost) after an arithmetic operation.
+      It also stores the contents of last bit of a shift or rotate operation.
+
+
+  * All the syscalls are listed in /usr/include/asm/unistd.h
+
+
+  * ADDRESSING
+
+  * The three basic modes of addressing are :
+    - Register addressing
+    - Immediate addressing
+    - Memory addressing
+
+
+  * INSTRUCTIONS :
+
+  * The MOV Instruction
+    - MOV destination , source
+
+    - MOV  register, register
+    - MOV  register, immediate
+    - MOV  register, memory
+    - MOV  memory, immediate
+    - MOV  memory, register
+
+    Type Specifier 	Bytes addressed
+      BYTE 	          1
+      WORD 	          2
+      DWORD 	        4
+      QWORD 	        8
+      TBYTE 	        10
+
+  * Variables Types
+  Directive 	+    Purpose          + Storage Space
+  -------------------------------------------------
+  DB 	          Define Byte 	      allocates 1 byte
+  DW 	          Define Word 	      allocates 2 bytes
+  DD 	          Define Doubleword 	allocates 4 bytes
+  DQ 	          Define Quadword 	  allocates 8 bytes
+  DT 	          Define Ten Bytes 	  allocates 10 bytes
+
+  * Variables Types Without Initialization
+  Directive 	          Purpose
+  RESB          Reserve a Byte
+  RESW          Reserve a Word
+  RESD          Reserve a Doubleword
+  RESQ          Reserve a Quadword
+  REST          Reserve a Ten Bytes
+
+  * Directive times to multiple initializations
+  marks  TIMES  9  DW  0
+
+  * Constans
+              Examples
+  EQU         CONSTANT_NAME EQU expression ;; de solo lectura
+  %define     %define PTR [EBP+4]          ;; funciona como la directive #define in c
+  %assign     %assign TOTAL 10             ;; se puede redefinir
+
+  * Aritmetic Instrucions
+
+  - INC destination                        ;; aumenta uno el destino
+  - DEC destination                        ;; decrementa uno el destino
+
+  - ADD/SUB	destination, source            ;; adiciona o resta los operandos ylo guarda en destination
+      |                                    ;;clear the overflow and carry flags
+  Posibilities of ADD/SUB:
+    -Register to register
+    -Memory to register
+    -Register to memory
+    -Register to constant data
+    -Memory to constant data
+
+  - MUL/IMUL multiplier                   ;; MUL maneja unsigned data y IMUL maneja signed data
+                                          ;; Se multiplica AL y el multiplicador y se guarda en AX
+
+  - DIV/IDIV	divisor                     ;; DIV maneja unsigned data y IDIV maneja signed data
+                                          ;; Se divide AX / divisor , el cociente se guarda en AL y el resto en AH
+
+
+  Modes to Print in Screen:
+    - tty :
+      ```
+        mov ah, 0x0e ; tty mode
+        mov al, 'H'
+        int 0x10
+      ```
+    - Graphical Mode
+      ``` 200px filas x 320 px columnas
+        mov ax, 13h                         ; Graphical Mode
+        int 10h                             ; Call interrupt
+        mov ax, 0A000h                       ;
+        mov es, ax                          ; set the base Graphical memory direction
+
+        mov di, 320 * filas + columnas      ; set the pixel on the possition of the matrix screen
+        mov eax, 02h                        ; set the color ; ah = 1px , al = 1px , ax = 2px , eax = 4px
+        mov [es:di], eax                    ; print the pixel on the screen
+      ```
+    - Text Mode
+      ``` 80f x 25c
+        mov ax, 03h                         ; Text Mode
+        int 10h                             ; Call interrupt
+        mov ax, 0B8000h                       ;
+        mov es, ax                          ; set the base Text memory direction
+
+        ;ah -> character attribute
+              7 6 5 4 3 2 1 0 -> 7 = blink , 6 - 4 = background color, 3 = intensity, 2 - 0 = color
+        ;al -> character value
+
+        mov di, 0 ; 160 * filas + 2 * columnas  ; set the character on the possition of the matrix screen
+        mov [es:di], ax                    ; print the char on the screen
+      ```
+
+;; Codigos Scan
+01h : Esc
+02h : 1
+03h : 2
+04h : 3
+05h : 4
+06h : 5
+07h : 6
+08h : 7
+09h : 8
+0Ah : 9
+0Bh : 0
+0Ch : -
+0Dh : =
+0Eh : Backspace
+0Fh : Tab
+10h : Q
+11h : W
+12h : E
+13h : R
+14h : T
+15h : Y
+16h : U
+17h : I
+18h : O
+19h : P
+1Ah : [
+1Bh : ]
+1Ch : Enter
+1Dh : Left Control
+1Eh : A
+1Fh : S
+20h : D
+21h : F
+22h : G
+23h : H
+24h : J
+25h : K
+26h : L
+27h : ;
+28h : '
+29h : `
+2Ah : Left Shift
+2Bh : \
+2Ch : Z
+2Dh : X
+2Eh : C
+2Fh : V
+30h : B
+31h : N
+32h : M
+33h : ,
+34h : .
+35h : /
+36h : Right Shift
+37h : *
+38h : Left Alt
+39h : Space
+3Ah : Caps Lock
+3Bh : F1
+3Ch : F2
+3Dh : F3
+3Eh : F4
+3Fh : F5
+40h : F6
+41h : F7
+42h : F8
+43h : F9
+44h : F10
+45h : Num Lock
+46h : Scroll Lock
+47h : Home
+48h : Up Arrow
+49h : Page Up
+4Ah : -
+4Bh : Left Arrow
+4Ch : 5 (numpad)
+4Dh : Right Arrow
+4Eh : +
+4Fh : End
+50h : Down Arrow
+51h : Page Down
+52h : Insert
+53h : Delete
+54h : (unused)
+55h : (unused)
+56h : (unused)
+57h : F11
+58h : F12
+
+
+# TIMER
+mov ax,timer
+mov [es:4*8] , ax
+mov [es:4*8 + 2] ,cs
+
+# Keyboard
+mov ax,keyboard
+mov [es:4*9] , ax
+mov [es:4*9 + 2] ,cs
+sti 
+
+timer: 
+  cli
+  inc dl
+
+  @@ :
+    cmp dl,18
+    jne @b
+  ;;codigo
+
+  xor dl, dl
+  mov al, 20h
+  out 20h, al
+  iret
+
+keyboard: 
+  cli
+
+  in  al,60h	; Leer el buffer del teclado
+
+  cmp al,10000000b  ; compruebo si está presionada o no, 1 liberado, 0 presionado
+  jne  released      ;si esta liberada no voy a hacer nada
+  jmp  pressed
+
+  mov al, 20h
+  out 20h, al
+  iret
