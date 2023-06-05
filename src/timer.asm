@@ -42,7 +42,6 @@ printGame:
 
 calculateCollisionBullet1:
   pusha
-    
 
   popa
   ret

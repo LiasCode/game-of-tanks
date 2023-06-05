@@ -17,7 +17,6 @@ mov ax,timer
 mov [es:4*8] , ax
 mov [es:4*8 + 2] ,cs
 
-sti
 
 ;;;;;;;;;;;; Modo grafico
 xor eax, eax
@@ -25,6 +24,10 @@ mov ax, 13h
 int 10h
 mov ax, 0A000h
 mov es, ax
+
+gameLoop:
+  call printGame
+  jmp gameLoop
 
 jmp exit
 
@@ -41,13 +44,13 @@ include 'tank2.asm'
 include 'bullet.asm'
 
 ;;;;; DATA
-tank1Pos              dw (320 * 0 + 0)
+tank1Pos              dw (320 * 12 + 5)
 tank1Hearts           db 3 ;; max 3 hearts
 tank1BalaPos          dw (320 * 0 + 0)
 tank1BalaActiveDirPos db 0   ; 1 up, 2 right, 3 down, 4 left, 0 inactive
 tank1BalaActiveTime   db 0   ; when == 8 set to 0 and tank1BalaActiveDirPos = 0
 
-tank2Pos              dw (320 * 180 + 300)
+tank2Pos              dw (320 * 175 + 295)
 tank2Hearts           db 3 ;; max 3 hearts
 tank2BalaPos          dw (320 * 0 + 0)
 tank2BalaActiveDirPos db 0   ; 1 up, 2 right, 3 down, 4 left, 0 inactive

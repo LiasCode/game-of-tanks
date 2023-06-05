@@ -29,39 +29,27 @@ drawTank2:
   popa
   ret
 
-drawTank2ToDown:
-  pusha
-    mov  ax,[tank2Pos]      ;; position
-    mov  dl, [tank2Color]             ;; color
-    call drawSquare20x20
-    ;; Canon 
-    mov  dl, [tank2Color]             ;; color
-    add ax , 320 * 20 + 5
-    call drawSquare10x10
-    sub ax , 320 * 20 + 5
-    ;; Cabain Tank
-    add ax , 320 * 5 + 5
-    mov  dl, 0x13             ;; color
-    call drawSquare10x10
-    sub ax , 320 * 10 - 5
-  popa
-  ret
-
 drawTank2ToUp:
   pusha
     mov  ax,[tank2Pos]      ;; position
     mov  dl, [tank2Color]             ;; color
     call drawSquare20x20
-    ;; Canon 
+
+    ;; Canon
+    mov  ax,[tank2Pos]      ;; position
     mov  dl, [tank2Color]             ;; color
-    sub ax , 10 * 320 - 5
-    call drawSquare10x10
-    add ax , 10 * 320 - 5
+    sub ax , 10 * 320 - 8
+    call drawSquare5x5
+    ;; Canon
+    mov  ax,[tank2Pos]      ;; position
+    mov  dl, [tank2Color]             ;; color
+    sub ax , 5 * 320 - 8
+    call drawSquare5x5
     ;; Cabain Tank
+    mov  ax,[tank2Pos]      ;; position
     add ax , 320 * 5 + 5
     mov  dl, 0x13             ;; color
     call drawSquare10x10
-    sub ax , 320 * 10 - 5
   popa
   ret
 
@@ -70,16 +58,44 @@ drawTank2ToRight:
     mov  ax,[tank2Pos]      ;; position
     mov  dl, [tank2Color]             ;; color
     call drawSquare20x20
-    ;; Canon 
+    ;; Canon
+    mov ax, [tank2Pos]
     mov  dl, [tank2Color]             ;; color
-    add  ax , 20 * 1 + 5 * 320
-    call drawSquare10x10
-    sub ax , 20 * 1 + 5 * 320
+    add  ax , 20 * 1 + 7 * 320
+    call drawSquare5x5
+    ;; Canon
+    mov ax, [tank2Pos]
+    mov  dl, [tank2Color]             ;; color
+    add  ax , 25 * 1 + 7 * 320
+    call drawSquare5x5
     ;; Cabain Tank
+    mov  ax,[tank2Pos]      ;; position
     add ax , 320 * 5 + 5
     mov  dl, 0x13             ;; color
     call drawSquare10x10
-    sub ax , 320 * 10 - 5
+  popa
+  ret
+
+drawTank2ToDown:
+  pusha
+    mov  ax,[tank2Pos]      ;; position
+    mov  dl, [tank2Color]             ;; color
+    call drawSquare20x20
+    ;; Canon
+    mov  ax,[tank2Pos]      ;; position
+    mov  dl, [tank2Color]             ;; color
+    add  ax , 20 * 320 + 8
+    call drawSquare5x5
+    ;; Canon
+    mov  ax,[tank2Pos]      ;; position
+    mov  dl, [tank2Color]             ;; color
+    add ax , 25 * 320 + 8
+    call drawSquare5x5
+    ;; Cabain Tank
+    mov  ax,[tank2Pos]      ;; position
+    add ax , 320 * 5 + 5
+    mov  dl, 0x13             ;; color
+    call drawSquare10x10
   popa
   ret
 
@@ -88,16 +104,23 @@ drawTank2ToLeft:
     mov  ax,[tank2Pos]      ;; position
     mov  dl,[tank2Color]             ;; color
     call drawSquare20x20
-    ;; Canon 
-    mov  dl,[tank2Color]             ;; color
-    sub ax , 1 * 10  - 5 * 320
-    call drawSquare10x10
-    add ax , 1 * 10 - 5 * 320
+    ;; Canon
+    mov ax, [tank2Pos]
+    mov  dl, [tank2Color]             ;; color
+    add  ax , 7 * 320
+    sub  ax , 5
+    call drawSquare5x5
+    ;; Canon
+    mov ax, [tank2Pos]
+    mov  dl, [tank2Color]             ;; color
+    add  ax , 7 * 320
+    sub  ax , 10
+    call drawSquare5x5
     ;; Cabain Tank
+    mov  ax,[tank2Pos]      ;; position
     add ax , 320 * 5 + 5
     mov  dl, 0x13             ;; color
     call drawSquare10x10
-    sub ax , 320 * 10 - 5
   popa
   ret
 
