@@ -8,9 +8,9 @@ printBackground :
     loop backGroundLoop
   ret
 
-drawSquare20x20:
+drawSquare20x20:  ;; parametros en ax -> posicion , dl -> color
   pusha
-  mov cx , 400d              ; counter 100px  10x10 square
+  mov cx , 400d              ; counter 100px  20x20 square
   xor edi, edi
   mov di , ax
   xor ax,ax
@@ -32,14 +32,14 @@ drawSquare20x20:
       jmp pintar20x20
 
     pintar20x20 :
-      mov al, 02h              ; pixel color
+      mov al, dl              ; pixel color
       mov [es:di], al
       inc di
       loop @b
   popa
   ret
 
-drawSquare10x10:
+drawSquare10x10: ;; parametros en ax -> posicion , dl -> color
   pusha
   mov cx , 100d              ; counter 100px  10x10 square
   xor edi, edi
@@ -63,9 +63,41 @@ drawSquare10x10:
       jmp pintar10x10
 
     pintar10x10:
-      mov al, 0x13           ; pixel color
+      mov al, dl           ; pixel color
       mov [es:di], al
       inc di
       loop @b
   popa
   ret
+
+drawSquare5x5: ;; parametros en ax -> posicion , dl -> color
+  pusha
+  mov cx , 25              ; counter 100px  10x10 square
+  xor edi, edi
+  mov di , ax
+  xor ax,ax
+
+  @@ :
+    cmp cx , 25
+    je pintar5x5
+
+    mov ax , cx
+    mov bl , 5
+    div bl
+
+    cmp ah, 0
+    je  aumentarFila5x5      ; aumentar fila cada 10 vueltas
+    jmp pintar5x5
+
+    aumentarFila5x5:
+      add di , 320 - 5
+      jmp pintar5x5
+
+    pintar5x5:
+      mov al, dl           ; pixel color
+      mov [es:di], al
+      inc di
+      loop @b
+  popa
+  ret
+

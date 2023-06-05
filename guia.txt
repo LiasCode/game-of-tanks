@@ -178,9 +178,9 @@
     Type Specifier 	Bytes addressed
       BYTE 	          1
       WORD 	          2
-      DWORD 	        4
-      QWORD 	        8
-      TBYTE 	        10
+      DWORD 	          4
+      QWORD 	          8
+      TBYTE 	         10
 
   * Variables Types
   Directive 	+    Purpose          + Storage Space
