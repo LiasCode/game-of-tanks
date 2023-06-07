@@ -4,7 +4,7 @@ keyboard:
   in  al,60h	; Leer el buffer del teclado
 
   test al,10000000b  ; compruebo si está presionada o no, 1 liberado, 0 presionado
-  jz   released      
+  jz   released
   jmp  pressed
 
   released:
@@ -88,57 +88,84 @@ actionKeyA:
 
 actionKeySpace:
   pusha
-    cmp [tank1BalaActiveTime], 0
+    cmp [tank1BalaActiveTime], 0  ;; do nothing if exist an active bullet
     jne exitActionKeySpace
+    ;; Compare last Direction of the Tank
     cmp [tank1LastDir], 1
-    je  actionBulletToUp
+    je  actionBullet1ToUp
     cmp [tank1LastDir], 2
-    je  actionBulletToRight
+    je  actionBullet1ToRight
     cmp [tank1LastDir], 3
-    je  actionBulletToDown
+    je  actionBullet1ToDown
     cmp [tank1LastDir], 4
-    je  actionBulletToLeft
+    je  actionBullet1ToLeft
 
-    actionBulletToUp:
+    balaOffsetPositionVertical = 8
+    balaOffsetPositionHorizontal = 7
+
+    actionBullet1ToUp:
       mov [tank1BalaActiveDirPos], 1
       ;; Create Bullet
       push ax
-	mov ax, [tank1Pos]
-	sub ax , 10 * 320 - 7
-	mov [tank1BalaPos], ax
+      push bx
+        mov ax, [tank1PosY]
+        mov bx, [tank1PosX]
+        add ax, balaOffsetPositionVertical
+        add bx, balaOffsetPositionVertical
+        mov [tank1BalaPosY], ax
+        mov [tank1BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala1Up
+      call incPosBulletTank1Up
       jmp exitActionKeySpace
-    actionBulletToRight:
+
+    actionBullet1ToRight:
       mov [tank1BalaActiveDirPos], 2
       ;; Create Bullet
       push ax
-	mov ax, [tank1Pos]
-	add  ax , 20 * 1 + 7 * 320
-	mov [tank1BalaPos], ax
+      push bx
+        mov ax, [tank1PosY]
+        mov bx, [tank1PosX]
+        add ax, balaOffsetPositionHorizontal
+        add bx, balaOffsetPositionHorizontal
+        mov [tank1BalaPosY], ax
+        mov [tank1BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala1Right
-      jmp exitActionKeySpace 
-    actionBulletToDown:
+      call incPosBulletTank1Right
+      jmp exitActionKeySpace
+
+    actionBullet1ToDown:
       mov [tank1BalaActiveDirPos], 3
       ;; Create Bullet
       push ax
-	mov ax, [tank1Pos]
-	add ax , 320 * 20 + 7
-	mov [tank1BalaPos], ax
+      push bx
+        mov ax, [tank1PosY]
+        mov bx, [tank1PosX]
+        add ax, balaOffsetPositionVertical
+        add bx, balaOffsetPositionVertical
+        mov [tank1BalaPosY], ax
+        mov [tank1BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala1Down
-      jmp exitActionKeySpace 
-    actionBulletToLeft:
+      call incPosBulletTank1Down
+      jmp exitActionKeySpace
+
+    actionBullet1ToLeft:
       mov [tank1BalaActiveDirPos], 4
       ;; Create Bullet
       push ax
-	mov ax, [tank1Pos]
-	sub ax , 1 * 10  - 7 * 320
-	mov [tank1BalaPos], ax
+      push bx
+        mov ax, [tank1PosY]
+        mov bx, [tank1PosX]
+        add ax, balaOffsetPositionHorizontal
+        add bx, balaOffsetPositionHorizontal
+        mov [tank1BalaPosY], ax
+        mov [tank1BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala1Left
-      jmp exitActionKeySpace 
+      call incPosBulletTank1Left
+      jmp exitActionKeySpace
 
   exitActionKeySpace:
   popa
@@ -167,56 +194,83 @@ actionKeyLeft:
 
 actionKeyEnter:
   pusha
-    cmp [tank2BalaActiveTime], 0
+    cmp [tank2BalaActiveTime], 0  ;; do nothing if exist an active bullet
     jne exitActionKeyEnter
+    ;; Compare last Direction of the Tank
     cmp [tank2LastDir], 1
-    je actionBullet2ToUp
+    je  actionBullet2ToUp
     cmp [tank2LastDir], 2
-    je actionBullet2ToRight
+    je  actionBullet2ToRight
     cmp [tank2LastDir], 3
-    je actionBullet2ToDown
+    je  actionBullet2ToDown
     cmp [tank2LastDir], 4
-    je actionBullet2ToLeft
+    je  actionBullet2ToLeft
+
+    balaOffsetPositionVertical2 = 8
+    balaOffsetPositionHorizontal2 = 7
 
     actionBullet2ToUp:
       mov [tank2BalaActiveDirPos], 1
       ;; Create Bullet
       push ax
-	mov ax, [tank2Pos]
-	sub ax , 10 * 320 - 7
-	mov [tank2BalaPos], ax
+      push bx
+        mov ax, [tank2PosY]
+        mov bx, [tank2PosX]
+        add ax, balaOffsetPositionVertical2
+        add bx, balaOffsetPositionVertical2
+        mov [tank2BalaPosY], ax
+        mov [tank2BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala2Up
+      call incPosBulletTank2Up
       jmp exitActionKeyEnter
+
     actionBullet2ToRight:
       mov [tank2BalaActiveDirPos], 2
       ;; Create Bullet
       push ax
-	mov ax, [tank2Pos]
-	add  ax , 20 * 1 + 7 * 320
-	mov [tank2BalaPos], ax
+      push bx
+        mov ax, [tank2PosY]
+        mov bx, [tank2PosX]
+        add ax, balaOffsetPositionHorizontal2
+        add bx, balaOffsetPositionHorizontal2
+        mov [tank2BalaPosY], ax
+        mov [tank2BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala2Right
+      call incPosBulletTank1Right
       jmp exitActionKeyEnter
+
     actionBullet2ToDown:
       mov [tank2BalaActiveDirPos], 3
-      ;; Create Bullet
+       ;; Create Bullet
       push ax
-	mov ax, [tank2Pos]
-	add ax , 320 * 20 + 7
-	mov [tank2BalaPos], ax
+      push bx
+        mov ax, [tank2PosY]
+        mov bx, [tank2PosX]
+        add ax, balaOffsetPositionHorizontal2
+        add bx, balaOffsetPositionHorizontal2
+        mov [tank2BalaPosY], ax
+        mov [tank2BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala2Down
+      call incPosBulletTank2Down
       jmp exitActionKeyEnter
+
     actionBullet2ToLeft:
       mov [tank2BalaActiveDirPos], 4
-      ;; Create Bullet
+       ;; Create Bullet
       push ax
-	mov ax, [tank2Pos]
-	sub ax , 1 * 10  - 7 * 320
-	mov [tank2BalaPos], ax
+      push bx
+        mov ax, [tank2PosY]
+        mov bx, [tank2PosX]
+        add ax, balaOffsetPositionHorizontal2
+        add bx, balaOffsetPositionHorizontal2
+        mov [tank2BalaPosY], ax
+        mov [tank2BalaPosX], bx
+      pop bx
       pop ax
-      call incPosBala2Left
+      call incPosBulletTank2Left
       jmp exitActionKeyEnter
 
   exitActionKeyEnter:

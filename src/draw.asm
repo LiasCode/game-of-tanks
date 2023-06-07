@@ -1,4 +1,4 @@
-printBackground :
+printBackground:
   mov di, 0             ; screen position
   mov ax , 0808h        ; pixel color  gris
   mov ecx ,  (320 * 200 + 320 ) / 2
