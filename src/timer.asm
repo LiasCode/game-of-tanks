@@ -210,7 +210,7 @@ printEndGame:
 
     printMsg:
       ;; Print Msg
-      mov di , 160 * 10 + 2 * 10 ; msg start position
+      mov di , 160 * 10 + 2 * 14 ; msg start position
       cmp [gameWinner],1
       je loadColorGreen
       loadColorRed:
@@ -223,7 +223,7 @@ printEndGame:
 
     @@:
       in al , 60h
-      cmp al , [keyEnter]
+      cmp al , [keyEsc]
       je continueEndGame
       jmp @b
 
@@ -249,28 +249,33 @@ printStartGameScreen:
     mov es, ax
 
     mov si , startGameMsgTitle
-    mov di , 160 * 10 + 2 * 26 ; msg start position
+    mov di , 160 * 2 + 2 * 34 ; msg start position
     mov ah, 00001111b
     call printString
 
     mov si , startGameMsgTutorialKeys
-    mov di , 160 * 12 + 2 * 10 ; msg start position
+    mov di , 160 * 8 + 2 * 10 ; msg start position
     mov ah, 00001011b
     call printString
 
     mov si , startGameMsgTutorialPayerGreen
-    mov di , 160 * 14 + 2 * 10 ; msg start position
+    mov di , 160 * 10 + 2 * 10 ; msg start position
     mov ah, 00001010b
     call printString
 
     mov si , startGameMsgTutorialPayerRed
-    mov di , 160 * 16 + 2 * 10 ; msg start position
+    mov di , 160 * 12 + 2 * 10 ; msg start position
     mov ah, 00001100b
     call printString
 
     mov si , startGameMsgPressEnter
-    mov di , 160 * 18 + 2 * 18 ; msg start position
-    mov ah, 00001101b
+    mov di , 160 * 16 + 2 * 28 ; msg start position
+    mov ah, 00001111b
+    call printString
+
+    mov si , autorMsg1
+    mov di , 160 * 20 + 2 *56 ; msg start position
+    mov ah, 00001111b
     call printString
 
     @@:

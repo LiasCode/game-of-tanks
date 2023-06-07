@@ -48,13 +48,16 @@ keyMapS db 1fh
 
 ;; MSG strings
 startGameMsgTitle                db 'Game Of Tanks',0
-startGameMsgPressEnter           db 'Press Enter To Star Playing',0
+startGameMsgPressEnter           db 'Press "Enter" to start playing',0
 
-startGameMsgTutorialKeys         db 'How To Play ??',0
+startGameMsgTutorialKeys         db 'How to play ??',0
 startGameMsgTutorialPayerGreen   db 'Player GREEN : MOVE -> A W S D :  SHOOT -> SPACE',0
 startGameMsgTutorialPayerRed     db 'Player RED   : MOVE -> ARROWS  :  SHOOT -> ENTER',0
 
-endGameWinGreenMsg               db 'Fin del juego. Gana el jugador Verde, Press Enter To Reset',0
-endGameWinRedMsg                 db 'Fin del juego. Gana el jugador Rojo, Press Enter To Reset' ,0
+endGameWinGreenMsg               db 'End Game, Green player WINS. Press "ESC" to reset',0
+endGameWinRedMsg                 db 'End Game, RED   player WINS. Press "ESC" to reset' ,0
+
+autorMsg1                        db 'by Raul Lias & Elizabeth' ,0
+
 errorMsg                         db 'Fin del juego. Ocurrio un error, Press Enter To Reset' ,0
 gameWinner                       db  0  ; 1 -> verde ; 2 -> rojo
