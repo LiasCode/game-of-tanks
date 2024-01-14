@@ -57,7 +57,7 @@ startGameMsgTutorialPayerRed     db 'Player RED   : MOVE -> ARROWS  :  SHOOT -> 
 endGameWinGreenMsg               db 'End Game, Green player WINS. Press "ESC" to reset',0
 endGameWinRedMsg                 db 'End Game, RED   player WINS. Press "ESC" to reset' ,0
 
-autorMsg1                        db 'by Raul Lias & Elizabeth' ,0
+autorMsg1                        db 'by @LiasCode' ,0
 
 errorMsg                         db 'Fin del juego. Ocurrio un error, Press Enter To Reset' ,0
 gameWinner                       db  0  ; 1 -> verde ; 2 -> rojo
